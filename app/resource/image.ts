@@ -1,8 +1,9 @@
-export interface Image {
-  id?: string;
-  name?: string;
-  size?: string;
+export class Image{
+  
   url?: string;
+  name?: string;
   extension?: string;
+  size?: string;
   uploadDate?: string;
+
 }
