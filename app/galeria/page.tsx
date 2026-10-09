@@ -1,9 +1,12 @@
 'use client'
 
-import { Template, ImageCard } from '@/components';
+import { Template } from '@/components/Template';
+import { ImageCard } from '@/components/ImageCard';
 import { useImageService } from '@/resource/service';
 import { Image } from '@/resource/service';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components';
 
 export default function Galeria() {
 
@@ -12,6 +15,7 @@ export default function Galeria() {
   const [query, setQuery] = useState<string>('')
   const [extension, setExtension] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter();
 
   async function searchImages() {
     setLoading(true)
@@ -67,7 +71,7 @@ export default function Galeria() {
           </select>
 
           <button 
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center min-w-[90px] disabled:opacity-50" 
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center min-w-[90px] disabled:opacity-50" 
             onClick={searchImages}
             disabled={loading}
           >
@@ -78,9 +82,9 @@ export default function Galeria() {
             )}
           </button>
 
-          <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-            Add New 
-          </button>
+          <Button type="button" variant="danger"onClick={() => router.push('/upload')}>
+            Add New
+          </Button>
         </div>
       </section>
 
