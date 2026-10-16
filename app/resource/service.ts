@@ -29,10 +29,9 @@ export class ImageService {
     );
   }
 }
-  
 }
-
-
 
 // Custom Hook para instanciar o serviço
 export const useImageService = () => new ImageService();
+
+ 

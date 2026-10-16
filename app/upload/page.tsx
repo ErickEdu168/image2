@@ -11,10 +11,21 @@ export default function UploadPage() {
 
   const [name, setName] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [tagsText, setTagsText] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  function handleFileChange(selectedFile: File | null) {
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+    } else {
+      setFile(null);
+      setPreview(null);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,12 +61,12 @@ export default function UploadPage() {
     setIsLoading(true);
 
     try {
-      // Chama o método enviar(file, name, tags) do seu service
       await imageService.enviar(file, imageName, tags);
 
       setSuccess(true);
       setName('');
       setFile(null);
+      setPreview(null);
       setTagsText('');
       if (formRef.current) {
         formRef.current.reset();
@@ -71,58 +82,70 @@ export default function UploadPage() {
   return (
     <Template>
       <section className="flex flex-col items-center justify-center min-h-[80vh] px-4 py-8">
-        <div className="w-full max-w-lg p-6 bg-white rounded-xl shadow-md border border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        <div className="w-full max-w-lg p-6 bg-gray-800 rounded-xl shadow-md border border-gray-700">
+          <h1 className="text-2xl font-bold text-white mb-6 text-center">
             Enviar imagem
           </h1>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-950/60 border border-red-800 text-red-200 rounded-lg text-sm">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-green-950/60 border border-green-800 text-green-200 rounded-lg text-sm">
               Imagem enviada com sucesso!
             </div>
           )}
 
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-1">
+              <label className="block text-sm font-semibold text-gray-200 mb-1">
                 Nome da imagem
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400"
+                className="w-full border border-gray-700 bg-gray-900 rounded-lg p-2.5 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-500"
                 placeholder="Ex: Fotos antigas"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-1">
+              <label className="block text-sm font-semibold text-gray-200 mb-1">
                 Arquivo (PNG, JPG, JPEG ou GIF; máximo de 20 MB)
               </label>
               <input
                 type="file"
                 accept="image/png, image/jpeg, image/jpg, image/gif"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="w-full border border-gray-300 rounded-lg p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer"
+                onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+                className="w-full border border-gray-700 bg-gray-900 rounded-lg p-2 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 cursor-pointer"
               />
             </div>
 
+            
+            {preview && (
+              <div className="mt-3 flex flex-col items-center justify-center p-3 bg-gray-900/60 border border-gray-700 rounded-lg">
+                <p className="text-xs font-medium text-gray-400 mb-2">Pré-visualização:</p>
+                <img
+                  src={preview}
+                  alt="Pré-visualização da imagem"
+                  className="max-h-56 w-auto object-contain rounded-md border border-gray-700 shadow"
+                />
+              </div>
+            )}
+
             <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-1">
+              <label className="block text-sm font-semibold text-gray-200 mb-1">
                 Tags separadas por vírgula
               </label>
               <input
                 type="text"
                 value={tagsText}
                 onChange={(e) => setTagsText(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400"
+                className="w-full border border-gray-700 bg-gray-900 rounded-lg p-2.5 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-500"
                 placeholder="natureza, viagem"
               />
             </div>
@@ -143,7 +166,7 @@ export default function UploadPage() {
           <div className="mt-6 text-center">
             <Link
               href="/galeria"
-              className="text-sm font-semibold text-purple-600 hover:text-purple-800 underline transition-colors"
+              className="text-sm font-semibold text-purple-400 hover:text-purple-300 underline transition-colors"
             >
               Voltar para a galeria
             </Link>

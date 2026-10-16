@@ -30,18 +30,20 @@ export default function Galeria() {
     }
   }
 
-  function renderImageCard(image: Image, index: number) {
-    return (
-      <ImageCard
-        key={image.id || image.url || index}
-        imageName={image.name}
-        imageUrl={image.url}
-        imageSize={image.size}
-        uploadDate={image.uploadDate}
-        extension={image.extension}
-      />
-    )
-  }
+
+function renderImageCard(image: Image, index: number) {
+  return (
+    <ImageCard
+      key={image.id || image.url || index}
+      id={image.id}
+      imageName={image.name}
+      imageUrl={image.url}
+      imageSize={image.size}
+      uploadDate={image.uploadDate}
+      extension={image.extension}
+    />
+  );
+}
 
   function renderImageCards() {
     return images.map((image, index) => renderImageCard(image, index));
@@ -55,19 +57,19 @@ export default function Galeria() {
             type="text" 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="border px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            className="border border-gray-700 bg-gray-800 text-white placeholder-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
             placeholder="Buscar imagens..." 
           />
-          <select 
+          <select
             value={extension}
-            onChange={event => setExtension(event.target.value)} 
-            className="border px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setExtension(e.target.value)}
+            className="border border-gray-700 bg-gray-800 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">All formats</option>
-            <option value="PNG">PNG</option>
-            <option value="JPG">JPG</option>
-            <option value="GIF">GIF</option>
-            <option value="JPEG">JPEG</option>
+            <option value="" className="bg-gray-800 text-white">All formats</option>
+            <option value="PNG" className="bg-gray-800 text-white">PNG</option>
+            <option value="JPG" className="bg-gray-800 text-white">JPG</option>
+            <option value="GIF" className="bg-gray-800 text-white">GIF</option>
+            <option value="JPEG" className="bg-gray-800 text-white">JPEG</option>
           </select>
 
           <button 
