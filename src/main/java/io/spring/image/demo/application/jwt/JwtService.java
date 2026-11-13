@@ -5,12 +5,14 @@ import io.spring.image.demo.domain.AccessToken;
 import io.spring.image.demo.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.crypto.SecretKey;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import javax.crypto.SecretKey;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -18,9 +20,9 @@ public class JwtService {
     private final SecretKeyGenerator keyGenerator;
 
     public AccessToken generateToken(User user){
-        SecretKey key = keyGenerator.getKey();
-        Date expirationDate = generateExpirationDate();
-        Map<String, Object> claims = generateTokenClaims(user);
+        var key = keyGenerator.getKey();
+        var expirationDate = generateExpirationDate();
+        var claims = generateTokenClaims(user);
 
         String token = Jwts
                 .builder()
